@@ -37,6 +37,12 @@ class AuthController extends Controller
         ]);
     }
 
+    public function showWebLoginForm()
+    {
+        return view('auth.login');
+    }
+
+
     public function webLogin(Request $request)
     {
         $credentials = $request->validate([

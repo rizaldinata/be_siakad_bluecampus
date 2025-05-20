@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,6 +14,15 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->string('alamat');
+            $table->string('no_telepon');
+            $table->enum('jenis_kelamin', ['pria', 'wanita']);
+
+            $table->foreignId('id_users')
+                ->constrained('users')
+                ->onDelete('cascade');
+                
             $table->timestamps();
         });
     }
