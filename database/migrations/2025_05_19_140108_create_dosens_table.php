@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->string('program_studi');
 
-            $table->foreignId('users_id')
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onUpdate('cascade');

@@ -3,22 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class BlueCampusSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // Insert Users
+        // USERS
         DB::table('users')->insert([
             ['id' => 1, 'email' => 'admin@example.com', 'role' => 'admin', 'password' => Hash::make('password')],
             ['id' => 2, 'email' => 'dosen@example.com', 'role' => 'dosen', 'password' => Hash::make('password')],
             ['id' => 3, 'email' => 'mahasiswa@example.com', 'role' => 'mahasiswa', 'password' => Hash::make('password')],
         ]);
 
-        // Insert Kelas
+        // KELAS
         DB::table('kelas')->insert([
             'id' => 1,
             'nama_kelas' => 'TI-1A',
@@ -28,7 +27,7 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // Mata Kuliah
+        // MATA KULIAH
         DB::table('mata_kuliahs')->insert([
             'id' => 1,
             'kode_matkul' => 'TI101',
@@ -39,19 +38,19 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // Admin
+        // ADMIN
         DB::table('admins')->insert([
             'id' => 1,
             'nama' => 'Admin Utama',
             'alamat' => 'Gang Rajawali Barat No. 509, Bau-Bau',
             'no_telepon' => '0856775150',
             'jenis_kelamin' => 'pria',
-            'id_users' => 1,
+            'user_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // Dosen
+        // DOSEN
         DB::table('dosens')->insert([
             'id' => 1,
             'nama' => 'Dosen Satu',
@@ -62,12 +61,12 @@ class BlueCampusSeeder extends Seeder
             'gelar_belakang' => 'S.T., M.Kom',
             'jenis_kelamin' => 'pria',
             'program_studi' => 'Teknik Informatika',
-            'users_id' => 2,
+            'user_id' => 2,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // Mahasiswa
+        // MAHASISWA
         DB::table('mahasiswas')->insert([
             'id' => 1,
             'nama' => 'Mahasiswa Satu',
@@ -83,12 +82,12 @@ class BlueCampusSeeder extends Seeder
             'asal_sekolah' => 'SMA Negeri 1 Surabaya',
             'kelas_id' => 1,
             'dosen_wali_id' => 1,
-            'users_id' => 3,
+            'user_id' => 3,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // Paket FRS
+        // PAKET FRS
         DB::table('paket_frs')->insert([
             'id' => 1,
             'nama_paket' => 'PAKET 1',
@@ -112,7 +111,7 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // FRS Mahasiswa
+        // FRS MAHASISWA
         DB::table('frs_mahasiswas')->insert([
             'id' => 1,
             'status_disetujui' => 'ya',
@@ -123,7 +122,7 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // Jadwal Kuliah
+        // JADWAL KULIAH
         DB::table('jadwal_kuliahs')->insert([
             'id' => 1,
             'ruangan' => 'D401',
@@ -132,7 +131,7 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // Nilai
+        // NILAI
         DB::table('nilais')->insert([
             'id' => 1,
             'nilai_angka' => 85,

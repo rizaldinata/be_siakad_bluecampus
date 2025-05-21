@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($mahasiswa as $index => $mhs)
+                    @forelse ($mahasiswa as $index => $mhs)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $mhs->nim }}</td>
@@ -41,13 +41,19 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-info me-1">
+                                {{-- Lihat Detail --}}
+                                <a href="{{ route('admin.mahasiswa.show', $mhs->id) }}" class="btn btn-sm btn-info me-1">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
-                                <a href="#" class="btn btn-sm btn-warning me-1">
+
+                                {{-- Edit --}}
+                                <a href="{{ route('admin.mahasiswa.edit', $mhs->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
-                                <form action="#" method="POST" class="d-inline">
+
+                                {{-- Hapus --}}
+                                <form action="{{ route('admin.mahasiswa.destroy', $mhs->id) }}" method="POST"
+                                    class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger"
@@ -57,13 +63,11 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
-
-                    @if ($mahasiswa->isEmpty())
+                    @empty
                         <tr>
                             <td colspan="6" class="text-center text-muted">Belum ada data mahasiswa.</td>
                         </tr>
-                    @endif
+                    @endforelse
                 </tbody>
             </table>
         </div>

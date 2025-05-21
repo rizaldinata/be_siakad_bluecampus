@@ -15,8 +15,9 @@ class Mahasiswa extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'users_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
+
 
     public function kelas()
     {

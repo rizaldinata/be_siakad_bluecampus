@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('no_telepon');
             $table->enum('jenis_kelamin', ['pria', 'wanita']);
 
-            $table->foreignId('id_users')
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
                 
