@@ -18,7 +18,6 @@ class Mahasiswa extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
@@ -31,12 +30,6 @@ class Mahasiswa extends Model
 
     public function frsMahasiswa()
     {
-        return $this->hasMany(FrsMahasiswa::class, 'frs_mahasiswa_id');
-    }
-
-    public function frs()
-    {
-        return $this->belongsToMany(Frs::class, 'frs_mahasiswas', 'mahasiswa_id', 'frs_id')
-            ->withPivot('status_disetujui', 'catatan');
+        return $this->hasMany(FrsMahasiswa::class, 'id_mahasiswa');
     }
 }

@@ -56,7 +56,6 @@ class AdminMahasiswaController extends Controller
             'dosen_wali_id' => 'required|exists:dosens,id',
         ]);
 
-        // Buat akun user untuk mahasiswa
         $user = User::create([
             'name' => $request->nama,
             'email' => $request->email,
@@ -64,7 +63,6 @@ class AdminMahasiswaController extends Controller
             'role' => 'mahasiswa',
         ]);
 
-        // Simpan data mahasiswa
         Mahasiswa::create([
             'user_id' => $user->id,
             'nrp' => $request->nrp,
@@ -119,7 +117,6 @@ class AdminMahasiswaController extends Controller
             'password' => 'nullable|min:8',
         ]);
 
-        // Update user terkait
         if ($mahasiswa->user) {
             $mahasiswa->user->update([
                 'name' => $request->nama,
@@ -130,7 +127,6 @@ class AdminMahasiswaController extends Controller
             ]);
         }
 
-        // Update data mahasiswa
         $mahasiswa->update([
             'nrp' => $request->nrp,
             'nama' => $request->nama,
@@ -155,11 +151,7 @@ class AdminMahasiswaController extends Controller
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
 
-        // Hapus user terkait juga jika ada
-        if ($mahasiswa->user) {
-            $mahasiswa->user->delete();
-        }
-
+        $mahasiswa->user()->delete();
         $mahasiswa->delete();
 
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Mahasiswa berhasil dihapus.');

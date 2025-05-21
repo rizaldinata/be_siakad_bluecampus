@@ -5,6 +5,7 @@
     <p class="text-muted">Daftar semua mahasiswa yang terdaftar</p>
 
     <div class="card p-4">
+
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0">Tabel Mahasiswa</h5>
             <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-primary">
@@ -17,9 +18,11 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>NIM</th>
+                        <th>NRP</th>
                         <th>Nama</th>
-                        <th>Program Studi</th>
+                        <th>Email</th>
+                        <th>Kelas</th>
+                        <th>Semester</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -28,9 +31,11 @@
                     @forelse ($mahasiswa as $index => $mhs)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $mhs->nim }}</td>
+                            <td>{{ $mhs->nrp }}</td>
                             <td>{{ $mhs->nama }}</td>
-                            <td>{{ $mhs->prodi }}</td>
+                            <td>{{ $mhs->user->email ?? '' }}</td>
+                            <td>{{ $mhs->kelas->nama_kelas }}</td>
+                            <td>{{ $mhs->semester }}</td>
                             <td>
                                 @if ($mhs->status === 'aktif')
                                     <span class="badge bg-success">Aktif</span>

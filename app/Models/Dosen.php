@@ -15,11 +15,19 @@ class Dosen extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'users_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function frs()
     {
-        return $this->hasMany(Mahasiswa::class);
+        return $this->hasMany(Frs::class, 'dosen_id');
+    }
+
+    public function getNamaLengkapAttribute()
+    {
+        $gelarDepan = $this->gelar_depan ? $this->gelar_depan . ' ' : '';
+        $gelarBelakang = $this->gelar_belakang ? ', ' . $this->gelar_belakang : '';
+
+        return $gelarDepan . $this->nama . $gelarBelakang;
     }
 }

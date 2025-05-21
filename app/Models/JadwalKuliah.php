@@ -15,6 +15,6 @@ class JadwalKuliah extends Model
 
     public function frs()
     {
-        return $this->belongsTo(Frs::class);
+        return $this->belongsTo(Frs::class, 'id_frs');
     }
 }

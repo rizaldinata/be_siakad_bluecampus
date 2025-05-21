@@ -2,9 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MataKuliah extends Model
 {
-    //
+    use HasFactory;
+
+    protected $table = 'mata_kuliah';
+
+    protected $guarded = [];
+
+    public function frs()
+    {
+        return $this->hasMany(Frs::class, 'id_matkul');
+    }
 }

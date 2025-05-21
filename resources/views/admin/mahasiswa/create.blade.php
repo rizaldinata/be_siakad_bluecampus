@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label for="semester" class="form-label">Password</label>
-                    <input type="text" name="semester" id="semester" class="form-control" value="{{ old('password') }}"
+                    <label for="semester" class="form-label">Semester</label>
+                    <input type="text" name="semester" id="semester" class="form-control" value="{{ old('semester') }}"
                         required>
                 </div>
 

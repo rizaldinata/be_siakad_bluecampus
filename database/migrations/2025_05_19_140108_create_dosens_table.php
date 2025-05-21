@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('nip')->unique();
             $table->string('no_telp');
             $table->string('alamat');
-            $table->string('gelar_depan');
-            $table->string('gelar_belakang');
+            $table->string('gelar_depan')->nullable();
+            $table->string('gelar_belakang')->nullable();
 
             $table->enum('jenis_kelamin', ['pria', 'wanita']);
 

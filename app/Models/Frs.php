@@ -15,26 +15,26 @@ class Frs extends Model
 
     public function paketFrs()
     {
-        return $this->belongsTo(PaketFrs::class);
+        return $this->belongsTo(PaketFrs::class, 'id_paket_frs');
     }
 
     public function mataKuliah()
     {
-        return $this->belongsTo(MataKuliah::class, 'matkul_id');
+        return $this->belongsTo(MataKuliah::class, 'id_matkul');
     }
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class);
+        return $this->belongsTo(Dosen::class, 'id_dosen');
     }
 
-    public function jadwalKuliah() 
+    public function jadwalKuliah()
     {
-        return $this->hasOne(JadwalKuliah::class);
+        return $this->hasOne(JadwalKuliah::class, 'id_frs');
     }
 
     public function frsMahasiswas()
     {
-        return $this->hasMany(FrsMahasiswa::class);
+        return $this->hasMany(FrsMahasiswa::class, 'id_frs');
     }
 }

@@ -29,9 +29,9 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $dsn->nip }}</td>
-                            <td>{{ $dsn->nama }}</td>
+                            <td>{{ $dsn->nama_lengkap }}</td>
+                            <td>{{ $dsn->user->email }}</td>
                             <td>{{ $dsn->no_telp }}</td>
-                            <td>{{ $dsn->prodi }}</td>
                             <td>
                                 {{-- Lihat Detail --}}
                                 <a href="{{ route('admin.dosen.show', $dsn->id) }}" class="btn btn-sm btn-info me-1">

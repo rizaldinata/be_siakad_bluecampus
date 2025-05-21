@@ -13,13 +13,13 @@ class Kelas extends Model
 
     protected $guarded = [];
 
-    public function mahasiswa()
+    public function mahasiswas()
     {
-        return $this->hasMany(Mahasiswa::class);
+        return $this->hasMany(Mahasiswa::class, 'kelas');
     }
 
-    public function paket_frs()
+    public function paketFrs()
     {
-        return $this->belongsTo(PaketFrs::class);
+        return $this->hasMany(PaketFrs::class, 'id_kelas');
     }
 }
