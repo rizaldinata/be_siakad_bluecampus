@@ -99,7 +99,8 @@
                     <i class="bi bi-people-fill me-2"></i> Data Mahasiswa
                 </a>
 
-                <a class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}"
+                    href="{{ route('admin.dosen.index') }}">
                     <i class="bi bi-person-video2 me-2"></i> Data Dosen
                 </a>
 
@@ -126,14 +127,42 @@
                     </button>
                 </form>
             </nav>
-
         </div>
 
         <!-- Konten -->
         <div class="content">
+            <!-- Flash Messages -->
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             @yield('content')
         </div>
     </div>
+
+    <!-- Bootstrap JS (alert close support) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Auto Close Alert after 3 seconds -->
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }
+        }, 3000);
+    </script>
 
     @yield('scripts')
 </body>
