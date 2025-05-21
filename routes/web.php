@@ -11,5 +11,6 @@ Route::post('/logout', [AuthController::class, 'webLogout'])->name('web.logout')
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/mahasiswa', [AdminMahasiswaController::class, 'index'])->name('admin.mahasiswa.index');
+    // Route::get('/mahasiswa', [AdminMahasiswaController::class, 'index'])->name('admin.mahasiswa.index');
+    Route::resource('/mahasiswa', AdminMahasiswaController::class)->names('admin.mahasiswa');
 });                 
