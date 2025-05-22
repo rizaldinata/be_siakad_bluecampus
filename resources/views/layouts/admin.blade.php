@@ -124,7 +124,8 @@
                     <i class="bi bi-journal-text me-2"></i> Data FRS
                 </a>
 
-                <a class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}"
+                    href="{{ route('admin.jadwal-kuliah.index') }}">
                     <i class="bi bi-calendar-week me-2"></i> Data Jadwal
                 </a>
 

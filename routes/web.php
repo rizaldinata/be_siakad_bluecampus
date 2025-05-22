@@ -9,6 +9,7 @@ use App\Http\Controllers\web\AdminPaketFrsController;
 use App\Http\Controllers\web\AdminDashboardController;
 use App\Http\Controllers\web\AdminMahasiswaController;
 use App\Http\Controllers\web\AdminMataKuliahController;
+use App\Http\Controllers\web\AdminJadwalKuliahController;
 
 Route::get('/login', [AuthController::class, 'showWebLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'webLogin'])->name('web.login');
@@ -23,4 +24,5 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::resource('/frs', AdminFrsController::class, ['parameters' => ['frs' => 'frs']])->names('admin.frs');
     Route::resource('/mata-kuliah', AdminMataKuliahController::class)->names('admin.mata-kuliah');
     Route::resource('/paket-frs', AdminPaketFrsController::class)->names('admin.paket-frs');
+    Route::resource('/jadwal-kuliah', AdminJadwalKuliahController::class)->names('admin.jadwal-kuliah');
 });                 

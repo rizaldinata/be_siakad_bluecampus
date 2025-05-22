@@ -30,4 +30,4 @@ class Dosen extends Model
 
         return $gelarDepan . $this->nama . $gelarBelakang;
     }
-}
+}   

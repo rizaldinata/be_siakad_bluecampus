@@ -7,6 +7,7 @@
     <p class="text-muted mb-4">Informasi lengkap mahasiswa terdaftar</p>
 
     <div class="row">
+
         <!-- Informasi Pribadi -->
         <div class="col-md-6 mb-4">
             <div class="card p-4 h-100">
