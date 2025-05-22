@@ -15,7 +15,7 @@ class Kelas extends Model
 
     public function mahasiswas()
     {
-        return $this->hasMany(Mahasiswa::class, 'kelas');
+        return $this->hasMany(Mahasiswa::class, 'kelas_id');
     }
 
     public function paketFrs()

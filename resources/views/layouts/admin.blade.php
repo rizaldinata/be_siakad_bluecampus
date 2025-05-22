@@ -99,6 +99,11 @@
                     <i class="bi bi-people-fill me-2"></i> Data Mahasiswa
                 </a>
 
+                <a class="nav-link {{ request()->is('admin/kelas*') ? 'active' : '' }}"
+                    href="{{ route('admin.kelas.index') }}">
+                    <i class="bi bi-people-fill me-2"></i> Data Kelas
+                </a>
+
                 <a class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}"
                     href="{{ route('admin.dosen.index') }}">
                     <i class="bi bi-person-video2 me-2"></i> Data Dosen

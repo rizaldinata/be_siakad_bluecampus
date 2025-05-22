@@ -80,7 +80,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save me-1"></i> Simpan Perubahan
                 </button>
-                <a href="{{ route('admin.mahasiswa.index') }}" class="btn btn-secondary ms-2">
+                <a href="{{ route('admin.dosen.index') }}" class="btn btn-secondary ms-2">
                     <i class="bi bi-arrow-left me-1"></i> Kembali
                 </a>
             </div>
