@@ -11,20 +11,29 @@ class AdminNilaiController extends Controller
 {
     public function index()
     {
-        $nilais = Nilai::with([
-            'frsMahasiswa.mahasiswa',
-            'frsMahasiswa.frs.mataKuliah',
-            'frsMahasiswa.frs.dosen'
-        ])->get();
+        $frsDisetujuiDenganNilai = FrsMahasiswa::with(['mahasiswa', 'frs.mataKuliah', 'frs.dosen', 'nilai'])
+            ->where('status_disetujui', 'ya')
+            ->whereHas('nilai')
+            ->get();
 
-        return view('admin.nilai.index', compact('nilais'));
-    }      
+        $frsDisetujuiTanpaNilai = FrsMahasiswa::with(['mahasiswa', 'frs.mataKuliah', 'frs.dosen'])
+            ->where('status_disetujui', 'ya')
+            ->whereDoesntHave('nilai')
+            ->get();
 
+        return view('admin.nilai.index', compact('frsDisetujuiDenganNilai', 'frsDisetujuiTanpaNilai'));
+    }
 
-    public function create()
+    public function create(Request $request)
     {
-        $frsMahasiswas = FrsMahasiswa::with('mahasiswa', 'frs.mataKuliah')->get();
-        return view('admin.nilai.create', compact('frsMahasiswas'));
+        $id = $request->query('frs_mahasiswa_id');
+
+        $frsMahasiswa = FrsMahasiswa::with(['mahasiswa', 'frs.mataKuliah'])
+            ->where('status_disetujui', 'ya')
+            ->whereDoesntHave('nilai')
+            ->findOrFail($id);
+
+        return view('admin.nilai.create', compact('frsMahasiswa'));
     }
 
     public function store(Request $request)
@@ -34,18 +43,28 @@ class AdminNilaiController extends Controller
             'frs_mahasiswa_id' => 'required|exists:frs_mahasiswas,id',
         ]);
 
+        // Cek apakah data sudah punya nilai
+        $frsMahasiswa = FrsMahasiswa::with('nilai')->findOrFail($request->frs_mahasiswa_id);
+
+        if ($frsMahasiswa->status_disetujui !== 'ya') {
+            return redirect()->back()->with('error', 'FRS belum disetujui. Tidak dapat menambahkan nilai.');
+        }
+
+        if ($frsMahasiswa->nilai) {
+            return redirect()->route('admin.nilai.index')
+                ->with('error', 'Nilai untuk mahasiswa ini sudah ada.');
+        }
+
         $nilaiHuruf = $this->konversiHuruf($request->nilai_angka);
 
-        Nilai::create([
+        $frsMahasiswa->nilai()->create([
             'nilai_angka' => $request->nilai_angka,
             'nilai_huruf' => $nilaiHuruf,
-            'frs_mahasiswa_id' => $request->frs_mahasiswa_id,
         ]);
 
         return redirect()->route('admin.nilai.index')
             ->with('success', 'Nilai berhasil ditambahkan.');
     }
-
 
     public function show($id)
     {

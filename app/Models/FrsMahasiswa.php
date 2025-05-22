@@ -25,6 +25,6 @@ class FrsMahasiswa extends Model
 
     public function nilai()
     {
-        return $this->hasOne(Nilai::class, 'frs_mahasiswa_frs');
+        return $this->hasOne(Nilai::class, 'frs_mahasiswa_id');
     }
 }

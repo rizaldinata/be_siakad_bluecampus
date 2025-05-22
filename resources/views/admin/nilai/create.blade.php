@@ -7,21 +7,18 @@
     <div class="card p-4">
         <form action="{{ route('admin.nilai.store') }}" method="POST">
             @csrf
+
+            <!-- Hidden Input ID -->
+            <input type="hidden" name="frs_mahasiswa_id" value="{{ $frsMahasiswa->id }}">
+
             <div class="row">
                 <!-- Kolom Kiri -->
                 <div class="col-md-6 d-flex flex-column gap-3">
-                    <!-- Pilih Mahasiswa -->
+                    <!-- Info Mahasiswa - Mata Kuliah -->
                     <div>
-                        <label for="frs_mahasiswa_id" class="form-label">Mahasiswa - Mata Kuliah</label>
-                        <select name="frs_mahasiswa_id" id="frs_mahasiswa_id" class="form-select" required>
-                            <option value="" disabled selected>-- Pilih Mahasiswa & Mata Kuliah --</option>
-                            @foreach ($frsMahasiswas as $item)
-                                <option value="{{ $item->id }}"
-                                    {{ old('frs_mahasiswa_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->mahasiswa->nama ?? '-' }} - {{ $item->frs->mataKuliah->nama ?? '-' }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <label class="form-label">Mahasiswa - Mata Kuliah</label>
+                        <input type="text" class="form-control bg-light" disabled
+                            value="{{ $frsMahasiswa->mahasiswa->nama ?? '-' }} - {{ $frsMahasiswa->frs->mataKuliah->nama ?? '-' }}">
                     </div>
 
                     <!-- Nilai Angka -->
@@ -31,14 +28,14 @@
                             value="{{ old('nilai_angka') }}" min="0" max="100" required>
                     </div>
 
-                    <!-- Preview Nilai Huruf -->
+                    <!-- Nilai Huruf -->
                     <div>
                         <label class="form-label">Nilai Huruf (Otomatis)</label>
                         <input type="text" class="form-control bg-light" id="nilai_huruf_preview" readonly>
                     </div>
                 </div>
 
-                <!-- Kolom Kanan (Panduan Konversi) -->
+                <!-- Panduan Konversi -->
                 <div class="col-md-6">
                     <div class="border rounded p-3 h-100 bg-light">
                         <h6 class="fw-bold">Panduan Konversi</h6>
@@ -57,7 +54,6 @@
                 </div>
             </div>
 
-
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save me-1"></i> Simpan
@@ -69,7 +65,6 @@
         </form>
     </div>
 
-    <!-- Script Real-Time Konversi Nilai -->
     <script>
         document.getElementById('nilai_angka').addEventListener('input', function() {
             const angka = parseFloat(this.value);
