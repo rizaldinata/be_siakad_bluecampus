@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\web\AdminFrsMahasiswaController;
 use App\Http\Controllers\web\AdminFrsController;
 use App\Http\Controllers\web\AdminDosenController;
 use App\Http\Controllers\web\AdminKelasController;
@@ -26,4 +27,5 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::resource('/paket-frs', AdminPaketFrsController::class)->names('admin.paket-frs');
     Route::resource('/jadwal-kuliah', AdminJadwalKuliahController::class)->names('admin.jadwal-kuliah');
     Route::resource('/nilai', AdminNilaiController::class)->names('admin.nilai');
+    Route::resource('/frs-mahasiswa', AdminFrsMahasiswaController::class)->names('admin.frs-mahasiswa');
 });                 

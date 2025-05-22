@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('frs_mahasiswas', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('status_disetujui', ['ya', 'tidak', 'ditolak']);
+            $table->enum('status_disetujui', ['ya', 'tidak', 'menunggu']);
 
             $table->text('catatan');
 
