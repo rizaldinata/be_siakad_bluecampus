@@ -15,16 +15,16 @@ class FrsMahasiswa extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa');
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
     public function frs()
     {
-        return $this->belongsTo(Frs::class, 'id_frs');
+        return $this->belongsTo(Frs::class, 'frs_id');
     }
 
     public function nilai()
     {
-        return $this->hasOne(Nilai::class, 'id_frs_mahasiswa');
+        return $this->hasOne(Nilai::class, 'frs_mahasiswa_frs');
     }
 }

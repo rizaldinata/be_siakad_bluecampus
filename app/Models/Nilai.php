@@ -15,6 +15,6 @@ class Nilai extends Model
 
     public function frsMahasiswa()
     {
-        return $this->belongsTo(FrsMahasiswa::class, 'id_frs_mahasiswa');
+        return $this->belongsTo(FrsMahasiswa::class, 'frs_mahasiswa_id');
     }
 }

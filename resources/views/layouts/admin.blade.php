@@ -129,7 +129,8 @@
                     <i class="bi bi-calendar-week me-2"></i> Data Jadwal
                 </a>
 
-                <a class="nav-link {{ request()->is('admin/nilai*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->is('admin/nilai*') ? 'active' : '' }}"
+                    href="{{ route('admin.nilai.index') }}">
                     <i class="bi bi-clipboard-data me-2"></i> Data Nilai
                 </a>
 
