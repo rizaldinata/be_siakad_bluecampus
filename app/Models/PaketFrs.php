@@ -15,11 +15,11 @@ class PaketFrs extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function frs()
     {
-        return $this->hasMany(Frs::class, 'id_paket_frs');
+        return $this->hasMany(Frs::class, 'paket_frs_id');
     }
 }

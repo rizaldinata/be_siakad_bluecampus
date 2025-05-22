@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label for="nip" class="form-label">Program Studi</label>
+                    <label for="program_studi" class="form-label">Program Studi</label>
                     <input type="text" name="program_studi" id="program_studi" class="form-control"
                         value="{{ old('program_studi') }}" required>
                 </div>

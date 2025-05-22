@@ -9,12 +9,12 @@ class MataKuliah extends Model
 {
     use HasFactory;
 
-    protected $table = 'mata_kuliah';
+    protected $table = 'mata_kuliahs';
 
     protected $guarded = [];
 
     public function frs()
     {
-        return $this->hasMany(Frs::class, 'id_matkul');
+        return $this->hasMany(Frs::class, 'matkul_id');
     }
 }

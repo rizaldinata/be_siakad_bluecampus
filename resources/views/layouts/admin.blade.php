@@ -109,12 +109,19 @@
                     <i class="bi bi-person-video2 me-2"></i> Data Dosen
                 </a>
 
-                <a class="nav-link {{ request()->is('admin/frs*') ? 'active' : '' }}" href="#">
-                    <i class="bi bi-journal-text me-2"></i> Data FRS
+                <a class="nav-link {{ request()->is('admin/mata-kuliah*') ? 'active' : '' }}"
+                    href="{{ route('admin.mata-kuliah.index') }}">
+                    <i class="bi bi-person-video2 me-2"></i> Data Mata Kuliah
                 </a>
 
-                <a class="nav-link {{ request()->is('admin/paket-frs*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->is('admin/paket-frs*') ? 'active' : '' }}"
+                    href="{{ route('admin.paket-frs.index') }}">
                     <i class="bi bi-layers me-2"></i> Data Paket FRS
+                </a>
+
+                <a class="nav-link {{ request()->is('admin/frs*') ? 'active' : '' }}"
+                    href="{{ route('admin.frs.index') }}">
+                    <i class="bi bi-journal-text me-2"></i> Data FRS
                 </a>
 
                 <a class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}" href="#">
