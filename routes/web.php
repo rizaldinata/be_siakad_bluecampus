@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\web\AdminFrsMahasiswaController;
 use App\Http\Controllers\web\AdminFrsController;
 use App\Http\Controllers\web\AdminDosenController;
 use App\Http\Controllers\web\AdminKelasController;
@@ -11,6 +10,8 @@ use App\Http\Controllers\web\AdminPaketFrsController;
 use App\Http\Controllers\web\AdminDashboardController;
 use App\Http\Controllers\web\AdminMahasiswaController;
 use App\Http\Controllers\web\AdminMataKuliahController;
+use App\Http\Controllers\web\AdminTahunAjaranController;
+use App\Http\Controllers\web\AdminFrsMahasiswaController;
 use App\Http\Controllers\web\AdminJadwalKuliahController;
 
 Route::get('/login', [AuthController::class, 'showWebLoginForm'])->name('login');
@@ -28,4 +29,5 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::resource('/jadwal-kuliah', AdminJadwalKuliahController::class)->names('admin.jadwal-kuliah');
     Route::resource('/nilai', AdminNilaiController::class)->names('admin.nilai');
     Route::resource('/frs-mahasiswa', AdminFrsMahasiswaController::class)->names('admin.frs-mahasiswa');
+    Route::resource('/tahun-ajaran', AdminTahunAjaranController::class)->names('admin.tahun-ajaran');
 });                 

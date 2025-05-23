@@ -87,6 +87,12 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        // TAHUN AJARAN (baru)
+        DB::table('tahun_ajarans')->insert([
+            ['id' => 1, 'nama_tahun_ajaran' => '2023/2024'],
+            ['id' => 2, 'nama_tahun_ajaran' => '2024/2025'], 
+        ]);
+
         // PAKET FRS
         DB::table('paket_frs')->insert([
             'id' => 1,
@@ -96,13 +102,14 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // FRS
+        // FRS (dengan tahun_ajaran_id)
         DB::table('frs')->insert([
             'id' => 1,
             'hari' => 'senin',
             'jam_mulai' => '08:00:00',
             'jam_selesai' => '09:40:00',
             'semester' => 4,
+            'tahun_ajaran_id' => 2, // mengacu ke '2024/2025'
             'kelas' => 'TI-1A',
             'paket_frs_id' => 1,
             'matkul_id' => 1,

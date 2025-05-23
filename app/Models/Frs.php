@@ -37,4 +37,9 @@ class Frs extends Model
     {
         return $this->hasMany(FrsMahasiswa::class, 'frs_id');
     }
+
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
+    }
 }
