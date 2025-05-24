@@ -87,29 +87,29 @@ class BlueCampusSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // TAHUN AJARAN (baru)
+        // TAHUN AJARAN
         DB::table('tahun_ajarans')->insert([
             ['id' => 1, 'nama_tahun_ajaran' => '2023/2024'],
-            ['id' => 2, 'nama_tahun_ajaran' => '2024/2025'], 
+            ['id' => 2, 'nama_tahun_ajaran' => '2024/2025'],
         ]);
 
-        // PAKET FRS
+        // PAKET FRS (mengandung tahun_ajaran_id)
         DB::table('paket_frs')->insert([
             'id' => 1,
             'nama_paket' => 'PAKET 1',
             'kelas_id' => 1,
+            'tahun_ajaran_id' => 2, // 2024/2025
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // FRS (dengan tahun_ajaran_id)
+        // FRS (tidak perlu lagi tahun_ajaran_id karena lewat paket_frs)
         DB::table('frs')->insert([
             'id' => 1,
             'hari' => 'senin',
             'jam_mulai' => '08:00:00',
             'jam_selesai' => '09:40:00',
             'semester' => 4,
-            'tahun_ajaran_id' => 2, // mengacu ke '2024/2025'
             'kelas' => 'TI-1A',
             'paket_frs_id' => 1,
             'matkul_id' => 1,

@@ -27,6 +27,20 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- Tahun Ajaran --}}
+                <div class="mb-3 col-md-6">
+                    <label for="tahun_ajaran_id" class="form-label">Tahun Ajaran</label>
+                    <select name="tahun_ajaran_id" id="tahun_ajaran_id" class="form-select" required>
+                        <option value="">-- Pilih Tahun Ajaran --</option>
+                        @foreach ($tahunAjaranList as $tahun)
+                            <option value="{{ $tahun->id }}"
+                                {{ old('tahun_ajaran_id') == $tahun->id ? 'selected' : '' }}>
+                                {{ $tahun->nama_tahun_ajaran }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="mt-4">

@@ -15,6 +15,8 @@
                 </h5>
                 <div class="mb-2"><strong>Nama Paket:</strong> {{ $paketFrs->nama_paket }}</div>
                 <div class="mb-2"><strong>Kelas:</strong> {{ $paketFrs->kelas->nama_kelas ?? '-' }}</div>
+                <div class="mb-2"><strong>Tahun Ajaran:</strong> {{ $paketFrs->tahunAjaran->nama_tahun_ajaran ?? '-' }}
+                </div>
             </div>
         </div>
 

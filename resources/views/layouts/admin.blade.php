@@ -139,6 +139,11 @@
                     <i class="bi bi-clipboard-data me-2"></i> Data Nilai
                 </a>
 
+                <a class="nav-link {{ request()->is('admin/tahun-ajaran*') ? 'active' : '' }}"
+                    href="{{ route('admin.tahun-ajaran.index') }}">
+                    <i class="bi bi-clipboard-data me-2"></i> Data Tahun Ajaran
+                </a>
+
                 <form method="POST" action="{{ route('web.logout') }}" class="mt-4">
                     @csrf
                     <button type="submit" class="btn btn-danger w-100">

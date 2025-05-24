@@ -25,7 +25,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::resource('/kelas', AdminKelasController::class, ['parameters' => ['kelas' => 'kelas']])->names('admin.kelas');
     Route::resource('/frs', AdminFrsController::class, ['parameters' => ['frs' => 'frs']])->names('admin.frs');
     Route::resource('/mata-kuliah', AdminMataKuliahController::class)->names('admin.mata-kuliah');
-    Route::resource('/paket-frs', AdminPaketFrsController::class)->names('admin.paket-frs');
+    Route::resource('/paket-frs', AdminPaketFrsController::class, ['parameters' => ['paket-frs' => 'paket-frs']])->names('admin.paket-frs');
     Route::resource('/jadwal-kuliah', AdminJadwalKuliahController::class)->names('admin.jadwal-kuliah');
     Route::resource('/nilai', AdminNilaiController::class)->names('admin.nilai');
     Route::resource('/frs-mahasiswa', AdminFrsMahasiswaController::class)->names('admin.frs-mahasiswa');

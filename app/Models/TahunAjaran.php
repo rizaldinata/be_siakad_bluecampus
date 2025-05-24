@@ -15,6 +15,6 @@ class TahunAjaran extends Model
 
     public function frs()
     {
-        return $this->hasMany(Frs::class, 'tahun_ajaran_id');
+        return $this->hasMany(PaketFrs::class, 'tahun_ajaran_id');
     }
 }

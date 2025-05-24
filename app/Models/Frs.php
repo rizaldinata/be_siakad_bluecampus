@@ -40,6 +40,13 @@ class Frs extends Model
 
     public function tahunAjaran()
     {
-        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
+        return $this->hasOneThrough(
+            TahunAjaran::class,
+            PaketFrs::class,
+            'id',                // foreign key di PaketFrs
+            'id',                // primary key di TahunAjaran
+            'paket_frs_id',      // foreign key di FRS
+            'tahun_ajaran_id'    // foreign key di PaketFrs
+        );
     }
 }

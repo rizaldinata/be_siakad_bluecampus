@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\web;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\Kelas;
@@ -46,7 +47,6 @@ class AdminMahasiswaController extends Controller
             'tanggal_lahir' => 'required|date',
             'tempat_lahir' => 'required|string',
             'tanggal_masuk' => 'required|date',
-            'semester' => 'nullable|numeric|min:1',
             'status' => 'required|in:aktif,non-aktif,cuti',
             'jenis_kelamin' => 'required|in:pria,wanita',
             'alamat' => 'required|string',
@@ -55,6 +55,18 @@ class AdminMahasiswaController extends Controller
             'kelas_id' => 'required|exists:kelas,id',
             'dosen_wali_id' => 'required|exists:dosens,id',
         ]);
+
+        $tanggalMasuk = Carbon::parse($request->tanggal_masuk);
+        $bulanMasuk = $tanggalMasuk->month;
+        if ($bulanMasuk < 6 || $bulanMasuk > 12) {
+            return back()->withErrors([
+                'tanggal_masuk' => 'Tanggal masuk hanya diizinkan pada semester ganjil (bulan 6 sampai 12).'
+            ])->withInput();
+        }
+
+        $sekarang = Carbon::now();
+        $selisihBulan = $tanggalMasuk->diffInMonths($sekarang);
+        $semester = min(ceil($selisihBulan / 6), 8); // max semester 8
 
         $user = User::create([
             'name' => $request->nama,
@@ -67,7 +79,7 @@ class AdminMahasiswaController extends Controller
             'user_id' => $user->id,
             'nrp' => $request->nrp,
             'nama' => $request->nama,
-            'semester' => $request->semester ?? 1,
+            'semester' => $semester,
             'tanggal_lahir' => $request->tanggal_lahir,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_masuk' => $request->tanggal_masuk,
@@ -82,7 +94,6 @@ class AdminMahasiswaController extends Controller
 
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Mahasiswa berhasil ditambahkan.');
     }
-
 
     public function edit($id)
     {
@@ -102,39 +113,50 @@ class AdminMahasiswaController extends Controller
         $request->validate([
             'nrp' => 'required|unique:mahasiswas,nrp,' . $mahasiswa->id,
             'nama' => 'required|string|max:255',
-            'semester' => 'nullable|numeric|min:1',
-            'status' => 'required|in:aktif,cuti,non-aktif',
+            'email' => 'required|email|unique:users,email,' . $mahasiswa->user->id,
+            'password' => 'nullable|min:8',
             'tanggal_lahir' => 'required|date',
             'tempat_lahir' => 'required|string',
             'tanggal_masuk' => 'required|date',
+            'status' => 'required|in:aktif,non-aktif,cuti',
             'jenis_kelamin' => 'required|in:pria,wanita',
             'alamat' => 'required|string',
-            'no_telepon' => 'required|string',
+            'no_telepon' => 'required|string|max:15',
             'asal_sekolah' => 'required|string',
             'kelas_id' => 'required|exists:kelas,id',
             'dosen_wali_id' => 'required|exists:dosens,id',
-            'email' => 'required|email|unique:users,email,' . $mahasiswa->user->id,
-            'password' => 'nullable|min:8',
         ]);
 
-        if ($mahasiswa->user) {
-            $mahasiswa->user->update([
-                'name' => $request->nama,
-                'email' => $request->email,
-                'password' => $request->filled('password')
-                    ? Hash::make($request->password)
-                    : $mahasiswa->user->password,
-            ]);
+        // Hitung semester otomatis dari tanggal masuk
+        $tanggalMasuk = Carbon::parse($request->tanggal_masuk);
+        $bulanMasuk = $tanggalMasuk->month;
+
+        if ($bulanMasuk < 6 || $bulanMasuk > 12) {
+            return back()->withErrors([
+                'tanggal_masuk' => 'Tanggal masuk hanya diizinkan pada semester ganjil (bulan 6 sampai 12).'
+            ])->withInput();
         }
 
+        $sekarang = Carbon::now();
+        $selisihBulan = $tanggalMasuk->diffInMonths($sekarang);
+        $semester = min(max(ceil($selisihBulan / 6), 1), 8); // min 1, max 8
+
+        // Update user
+        $mahasiswa->user->update([
+            'name' => $request->nama,
+            'email' => $request->email,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $mahasiswa->user->password,
+        ]);
+
+        // Update mahasiswa
         $mahasiswa->update([
             'nrp' => $request->nrp,
             'nama' => $request->nama,
-            'semester' => $request->semester,
-            'status' => $request->status,
+            'semester' => $semester,
             'tanggal_lahir' => $request->tanggal_lahir,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_masuk' => $request->tanggal_masuk,
+            'status' => $request->status,
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
@@ -145,7 +167,6 @@ class AdminMahasiswaController extends Controller
 
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Mahasiswa berhasil diperbarui.');
     }
-
 
     public function destroy($id)
     {

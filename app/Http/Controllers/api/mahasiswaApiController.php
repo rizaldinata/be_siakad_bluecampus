@@ -25,7 +25,7 @@ class MahasiswaApiController extends Controller
                 'frsMahasiswa.frs.matkul',
                 'frsMahasiswa.frs.dosen',
                 'frsMahasiswa.nilai'
-            ])->where('id_users', $user->id)->first();
+            ])->where('user_id', $user->id)->first();
 
             if (!$mahasiswa) {
                 return response()->json(['message' => 'Data mahasiswa tidak ditemukan.'], 404);
@@ -56,7 +56,7 @@ class MahasiswaApiController extends Controller
             'frsMahasiswa.nilai'
         ])->findOrFail($id);
 
-        if ($user->role === 'mahasiswa' && $mahasiswa->id_users !== $user->id) {
+        if ($user->role === 'mahasiswa' && $mahasiswa->user_id !== $user->id) {
             return response()->json(['message' => 'Tidak boleh melihat data mahasiswa lain.'], 403);
         }
 

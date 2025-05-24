@@ -22,4 +22,9 @@ class PaketFrs extends Model
     {
         return $this->hasMany(Frs::class, 'paket_frs_id');
     }
+
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
+    }
 }
