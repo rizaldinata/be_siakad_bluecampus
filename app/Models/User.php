@@ -53,11 +53,11 @@ class User extends Authenticatable
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'user_id');
+        return $this->hasOne(Dosen::class, 'user_id');
     }
 
     public function admin()
     {
-        return $this->belongsTo(Admin::class, 'user_id');
+        return $this->hasOne(Admin::class, 'user_id');
     }
 }

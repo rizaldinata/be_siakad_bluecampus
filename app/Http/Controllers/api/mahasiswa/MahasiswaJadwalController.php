@@ -22,9 +22,8 @@ class MahasiswaJadwalController extends Controller
 
         $mahasiswaId = $user->mahasiswa->id;
 
-        // Filter tahun ajaran dan semester jika dikirim (optional)
         $tahunAjaran = $request->query('tahun_ajaran');
-        $semester = $request->query('semester'); // ganjil / genap
+        $semester = $request->query('semester'); 
 
         $frsMahasiswaQuery = FrsMahasiswa::with([
             'frs.jadwalKuliah',

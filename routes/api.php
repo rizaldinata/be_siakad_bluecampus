@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\MahasiswaApiController;
+use App\Http\Controllers\api\dosen\DosenJadwalController;
 use App\Http\Controllers\api\mahasiswa\MahasiswaJadwalController;
 
 
@@ -13,6 +14,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/mahasiswa/jadwal', [MahasiswaJadwalController::class, 'index']);
 });
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/dosen/jadwal', [DosenJadwalController::class, 'index']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mahasiswa', [MahasiswaApiController::class, 'index']);
