@@ -71,7 +71,6 @@ class AdminFrsController extends Controller
         ));
     }
 
-
     public function update(Request $request, Frs $frs)
     {
         $request->validate([

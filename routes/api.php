@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\MahasiswaApiController;
+use App\Http\Controllers\api\dosen\DosenNilaiController;
 use App\Http\Controllers\api\dosen\DosenJadwalController;
 use App\Http\Controllers\api\mahasiswa\MahasiswaNilaiController;
 use App\Http\Controllers\api\mahasiswa\MahasiswaJadwalController;
@@ -17,6 +18,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/dosen/nilai', [DosenNilaiController::class, 'kelasList']);
+    Route::get('/dosen/nilai/mahasiswa', [DosenNilaiController::class, 'mahasiswaList']);
+    Route::get('/dosen/nilai/mahasiswa/{id}', [DosenNilaiController::class, 'detailMahasiswa']);
+    Route::post('/dosen/nilai/mahasiswa/{id}/simpan', [DosenNilaiController::class, 'simpanNilai']);
     Route::get('/dosen/jadwal', [DosenJadwalController::class, 'index']);
 });
 
