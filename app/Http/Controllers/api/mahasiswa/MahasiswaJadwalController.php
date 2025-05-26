@@ -32,12 +32,13 @@ class MahasiswaJadwalController extends Controller
             'frs.paketFrs.tahunAjaran'
         ])
         ->where('mahasiswa_id', $mahasiswaId)
-        ->where('status_disetujui', 'ya');
+        ->where('status_disetujui', 'ya')
+        ->whereHas('frs.jadwalKuliah');
 
         if ($tahunAjaran) {
             $frsMahasiswaQuery->whereHas('frs.paketFrs.tahunAjaran', function ($q) use ($tahunAjaran) {
-            $q->where('nama_tahun_ajaran', $tahunAjaran);
-        });
+                $q->where('nama_tahun_ajaran', $tahunAjaran);
+            });
         }
 
         if ($semester) {

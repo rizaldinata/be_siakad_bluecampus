@@ -11,10 +11,11 @@ class AdminTahunAjaranController extends Controller
     public function index()
     {
         $tahunAjarans = TahunAjaran::withCount([
-            'frs as total_frs' => fn($q) => $q,
-            'frs as frs_disetujui' => fn($q) => $q->whereHas('frsMahasiswas', fn($s) => $s->where('status_disetujui', 'ya')),
-            'frs as frs_ditolak' => fn($q) => $q->whereHas('frsMahasiswas', fn($s) => $s->where('status_disetujui', 'tidak'))
+            'frsLangsung as total_frs' => fn($q) => $q,
+            'frsLangsung as frs_disetujui' => fn($q) => $q->whereHas('frsMahasiswas', fn($s) => $s->where('status_disetujui', 'ya')),
+            'frsLangsung as frs_ditolak' => fn($q) => $q->whereHas('frsMahasiswas', fn($s) => $s->where('status_disetujui', 'tidak'))
         ])->orderBy('nama_tahun_ajaran', 'desc')->get();
+
 
         return view('admin.tahun_ajaran.index', compact('tahunAjarans'));
     }

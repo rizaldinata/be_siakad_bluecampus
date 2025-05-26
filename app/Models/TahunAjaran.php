@@ -17,4 +17,16 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(PaketFrs::class, 'tahun_ajaran_id');
     }
+
+    public function frsLangsung()
+    {
+        return $this->hasManyThrough(
+            \App\Models\Frs::class,
+            \App\Models\PaketFrs::class,
+            'tahun_ajaran_id',  // foreign key di PaketFrs
+            'paket_frs_id',     // foreign key di Frs
+            'id',               // primary key di TahunAjaran
+            'id'                // primary key di PaketFrs
+        );
+    }
 }

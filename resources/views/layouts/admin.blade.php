@@ -184,7 +184,7 @@
                         href="{{ route('admin.paket-frs.index') }}">
                         <i class="bi bi-box-seam"></i> Data Paket FRS
                     </a>
-                    <a class="nav-link {{ request()->is('admin/frs*') ? 'active' : '' }}"
+                    <a class="nav-link {{ (request()->is('admin/frs') || request()->is('admin/frs/*')) && !request()->is('admin/frs-mahasiswa*') && !request()->is('admin/paket-frs*') ? 'active' : '' }}"
                         href="{{ route('admin.frs.index') }}">
                         <i class="bi bi-file-earmark-text-fill"></i> Data FRS
                     </a>
@@ -215,9 +215,9 @@
                     </button>
                 </form>
 
-                <div class="dark-toggle" onclick="toggleDarkMode()">
+                {{-- <div class="dark-toggle" onclick="toggleDarkMode()">
                     <i class="bi bi-moon-stars me-1"></i> Dark Mode
-                </div>
+                </div> --}}
             </div>
         </div>
 

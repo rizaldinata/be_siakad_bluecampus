@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Helpers\FilterHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -31,9 +32,21 @@ class AuthController extends Controller
 
         $token = $user->createToken('mobile-token')->plainTextToken;
 
+        $filterOptions = null;
+
+        // Tambahkan data filter jika role mahasiswa
+        if ($user->role === 'mahasiswa' && $user->mahasiswa) {
+            $tanggalMasuk = $user->mahasiswa->tanggal_masuk;
+            $filterOptions = [
+                'tahun_ajaran' => FilterHelper::getTahunAjaranList($tanggalMasuk),
+                'semester' => FilterHelper::getSemesterOptions($tanggalMasuk),
+            ];
+        }
+
         return response()->json([
             'token' => $token,
-            'user' => $user
+            'user' => $user->only(['id', 'email', 'role', 'created_at', 'updated_at']),
+            'filter_options' => $filterOptions,
         ]);
     }
 

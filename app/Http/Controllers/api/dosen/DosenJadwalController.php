@@ -24,7 +24,8 @@ class DosenJadwalController extends Controller
         $semester = $request->query('semester'); 
 
         $query = Frs::with(['mataKuliah', 'jadwalKuliah', 'paketFrs.tahunAjaran'])
-            ->where('dosen_id', $dosen->id);
+            ->where('dosen_id', $dosen->id)
+            ->whereHas('jadwalKuliah');
 
         if ($tahunAjaran) {
             $query->whereHas('paketFrs.tahunAjaran', function ($q) use ($tahunAjaran) {
