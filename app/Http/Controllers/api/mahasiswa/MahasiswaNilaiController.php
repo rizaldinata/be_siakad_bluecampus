@@ -51,7 +51,7 @@ class MahasiswaNilaiController extends Controller
             return [
                 'mata_kuliah' => $item->frs->mataKuliah->nama ?? '-',
                 'kode_matkul' => $item->frs->mataKuliah->kode_matkul ?? '-',
-                'nilai_huruf' => $item->nilai->nilai_huruf ?? '-',
+                'nilai_huruf' => $item->nilai->nilai_huruf ?? 'Belum Dinilai',
                 'semester' => $item->frs->semester,
                 'tahun_ajaran' => $item->frs->paketFrs->tahunAjaran->nama_tahun_ajaran ?? '-',
             ];

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['pria', 'wanita']);
 
             $table->text('alamat');
-            $table->string('no_telepon', 15);
+            $table->string('no_telepon', 20);
             $table->string('asal_sekolah');
 
             $table->foreignId('kelas_id')

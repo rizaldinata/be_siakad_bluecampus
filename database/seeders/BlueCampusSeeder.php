@@ -3,149 +3,176 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\Dosen;
+use App\Models\Kelas;
+use App\Models\Mahasiswa;
+use App\Models\TahunAjaran;
+use App\Models\MataKuliah;
+use App\Models\PaketFrs;
+use App\Models\Frs;
+use App\Models\FrsMahasiswa;
+use App\Models\JadwalKuliah;
+use App\Models\Nilai;
+use Faker\Factory as Faker;
+use Carbon\Carbon;
 
 class BlueCampusSeeder extends Seeder
 {
     public function run(): void
     {
-        // USERS
-        DB::table('users')->insert([
-            ['id' => 1, 'email' => 'admin@example.com', 'role' => 'admin', 'password' => Hash::make('password')],
-            ['id' => 2, 'email' => 'dosen@example.com', 'role' => 'dosen', 'password' => Hash::make('password')],
-            ['id' => 3, 'email' => 'mahasiswa@example.com', 'role' => 'mahasiswa', 'password' => Hash::make('password')],
-        ]);
+        $faker = Faker::create('id_ID');
 
-        // KELAS
-        DB::table('kelas')->insert([
-            'id' => 1,
+        // === 1. Tahun Ajaran ===
+        $ta1 = TahunAjaran::create(['nama_tahun_ajaran' => '2023/2024']);
+        $ta2 = TahunAjaran::create(['nama_tahun_ajaran' => '2024/2025']);
+
+        // === 2. Kelas ===
+        $kelas = Kelas::create([
             'nama_kelas' => 'TI-1A',
             'program_studi' => 'Teknik Informatika',
             'parallel_kelas' => 'A',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
-        // MATA KULIAH
-        DB::table('mata_kuliahs')->insert([
-            'id' => 1,
-            'kode_matkul' => 'TI101',
-            'nama' => 'Pemrograman Dasar',
-            'jenis_matkul' => 'Wajib',
-            'sks' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
+        // === 3. Admins ===
+        for ($i = 1; $i <= 2; $i++) {
+            $user = User::create([
+                'email' => "admin{$i}@example.com",
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]);
+
+            Admin::create([
+                'nama' => $faker->name(),
+                'alamat' => $faker->address(),
+                'no_telepon' => $faker->phoneNumber(),
+                'jenis_kelamin' => $faker->randomElement(['pria', 'wanita']),
+                'user_id' => $user->id,
+            ]);
+        }
+
+        // === 4. Dosen ===
+        $dosenIds = [];
+        for ($i = 1; $i <= 11; $i++) {
+            $user = User::create([
+                'email' => "dosen{$i}@example.com",
+                'password' => Hash::make('password'),
+                'role' => 'dosen',
+            ]);
+
+            $dosen = Dosen::create([
+                'nama' => $faker->name(),
+                'nip' => '19871231' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'no_telp' => $faker->phoneNumber(),
+                'alamat' => $faker->address(),
+                'gelar_depan' => $faker->randomElement(['Dr.', 'Ir.', '']),
+                'gelar_belakang' => $faker->randomElement(['M.T.', 'S.T., M.Kom', '']),
+                'jenis_kelamin' => $faker->randomElement(['pria', 'wanita']),
+                'program_studi' => 'Teknik Informatika',
+                'user_id' => $user->id,
+            ]);
+
+            $dosenIds[] = $dosen->id;
+        }
+
+        // === 5. Mata Kuliah ===
+        $matkulIds = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $matkul = MataKuliah::create([
+                'kode_matkul' => 'TI10' . $i,
+                'nama' => $faker->words(3, true),
+                'jenis_matkul' => $faker->randomElement(['Wajib', 'Pilihan']),
+                'sks' => rand(2, 4),
+            ]);
+
+            $matkulIds[] = $matkul->id;
+        }
+
+        // === 6. Mahasiswa (30) ===
+        $mahasiswaIds = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $user = User::create([
+                'email' => "mahasiswa{$i}@example.com",
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
+            ]);
+
+            $mahasiswa = Mahasiswa::create([
+                'nama' => $faker->name(),
+                'nrp' => '502520' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'semester' => 4,
+                'tanggal_lahir' => $faker->date('Y-m-d', '2005-12-31'),
+                'tempat_lahir' => $faker->city(),
+                'tanggal_masuk' => '2023-08-01',
+                'status' => 'aktif',
+                'jenis_kelamin' => $faker->randomElement(['pria', 'wanita']),
+                'alamat' => $faker->address(),
+                'no_telepon' => $faker->phoneNumber(),
+                'asal_sekolah' => $faker->company(),
+                'kelas_id' => $kelas->id,
+                'dosen_wali_id' => $dosenIds[10], // dosen wali
+                'user_id' => $user->id,
+            ]);
+
+            $mahasiswaIds[] = $mahasiswa->id;
+        }
+
+        // === 7. Paket FRS ===
+        $paketFrs = PaketFrs::create([
+            'nama_paket' => 'PAKET TI-1A',
+            'kelas_id' => $kelas->id,
+            'tahun_ajaran_id' => $ta2->id,
         ]);
 
-        // ADMIN
-        DB::table('admins')->insert([
-            'id' => 1,
-            'nama' => 'Admin Utama',
-            'alamat' => 'Gang Rajawali Barat No. 509, Bau-Bau',
-            'no_telepon' => '0856775150',
-            'jenis_kelamin' => 'pria',
-            'user_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // === 8. FRS (10) ===
+        $frsIds = [];
+        $hariList = ['senin', 'selasa', 'rabu', 'kamis', 'jumat'];
+        for ($i = 0; $i < 10; $i++) {
+            $jamMulai = Carbon::createFromTime(8 + ($i % 5) * 2)->format('H:i:s');
+            $jamSelesai = Carbon::createFromTime(10 + ($i % 5) * 2)->format('H:i:s');
 
-        // DOSEN
-        DB::table('dosens')->insert([
-            'id' => 1,
-            'nama' => 'Dosen Satu',
-            'nip' => '198712312022041001',
-            'no_telp' => '0898775641',
-            'alamat' => 'Jl. W.R. Supratman No. 48, Jakarta Selatan',
-            'gelar_depan' => 'Dr.',
-            'gelar_belakang' => 'S.T., M.Kom',
-            'jenis_kelamin' => 'pria',
-            'program_studi' => 'Teknik Informatika',
-            'user_id' => 2,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            $frs = Frs::create([
+                'hari' => $hariList[$i % 5],
+                'jam_mulai' => $jamMulai,
+                'jam_selesai' => $jamSelesai,
+                'semester' => 4,
+                'kelas' => $kelas->nama_kelas,
+                'paket_frs_id' => $paketFrs->id,
+                'matkul_id' => $matkulIds[$i],
+                'dosen_id' => $dosenIds[$i],
+            ]);
 
-        // MAHASISWA
-        DB::table('mahasiswas')->insert([
-            'id' => 1,
-            'nama' => 'Mahasiswa Satu',
-            'nrp' => '5025201234',
-            'semester' => 4,
-            'tanggal_lahir' => '2004-04-20',
-            'tempat_lahir' => 'Surabaya',
-            'tanggal_masuk' => '2022-08-01',
-            'status' => 'aktif',
-            'jenis_kelamin' => 'wanita',
-            'alamat' => 'Jl. Kutai No. 056, Malang',
-            'no_telepon' => '080685705',
-            'asal_sekolah' => 'SMA Negeri 1 Surabaya',
-            'kelas_id' => 1,
-            'dosen_wali_id' => 1,
-            'user_id' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            $frsIds[] = $frs->id;
 
-        // TAHUN AJARAN
-        DB::table('tahun_ajarans')->insert([
-            ['id' => 1, 'nama_tahun_ajaran' => '2023/2024'],
-            ['id' => 2, 'nama_tahun_ajaran' => '2024/2025'],
-        ]);
+            JadwalKuliah::create([
+                'ruangan' => 'R' . ($i + 1),
+                'frs_id' => $frs->id,
+            ]);
+        }
 
-        // PAKET FRS (mengandung tahun_ajaran_id)
-        DB::table('paket_frs')->insert([
-            'id' => 1,
-            'nama_paket' => 'PAKET 1',
-            'kelas_id' => 1,
-            'tahun_ajaran_id' => 2, // 2024/2025
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // === 9. FRS Mahasiswa (30 x 10 = 300)
+        $frsMahasiswaIds = [];
+        foreach ($mahasiswaIds as $mhsId) {
+            foreach ($frsIds as $frsId) {
+                $frsMhs = FrsMahasiswa::create([
+                    'status_disetujui' => 'ya',
+                    'catatan' => $faker->optional()->sentence(),
+                    'mahasiswa_id' => $mhsId,
+                    'frs_id' => $frsId,
+                ]);
+                $frsMahasiswaIds[] = $frsMhs->id;
+            }
+        }
 
-        // FRS (tidak perlu lagi tahun_ajaran_id karena lewat paket_frs)
-        DB::table('frs')->insert([
-            'id' => 1,
-            'hari' => 'senin',
-            'jam_mulai' => '08:00:00',
-            'jam_selesai' => '09:40:00',
-            'semester' => 4,
-            'kelas' => 'TI-1A',
-            'paket_frs_id' => 1,
-            'matkul_id' => 1,
-            'dosen_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // FRS MAHASISWA
-        DB::table('frs_mahasiswas')->insert([
-            'id' => 1,
-            'status_disetujui' => 'ya',
-            'catatan' => '-',
-            'mahasiswa_id' => 1,
-            'frs_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // JADWAL KULIAH
-        DB::table('jadwal_kuliahs')->insert([
-            'id' => 1,
-            'ruangan' => 'D401',
-            'frs_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // NILAI
-        DB::table('nilais')->insert([
-            'id' => 1,
-            'nilai_angka' => 85,
-            'nilai_huruf' => 'A',
-            'frs_mahasiswa_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // === 10. Nilai: 15 mahasiswa pertama saja
+        foreach (array_slice($frsMahasiswaIds, 0, 150) as $frsMhsId) {
+            Nilai::create([
+                'nilai_angka' => rand(65, 100),
+                'nilai_huruf' => $faker->randomElement(['A', 'AB', 'B', 'BC']),
+                'frs_mahasiswa_id' => $frsMhsId,
+            ]);
+        }
     }
 }

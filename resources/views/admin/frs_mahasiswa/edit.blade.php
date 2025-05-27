@@ -27,7 +27,7 @@
                 <!-- Status -->
                 <div class="mb-3 col-12">
                     <label for="status_disetujui" class="form-label">Status</label>
-                    <select name="status_disetujui" id="status_disetujui" class="form-select" required>
+                    <select name="status_disetujui" id="status_disetujui" class="form-select">
                         @foreach ($statusList as $status)
                             <option value="{{ $status }}"
                                 {{ old('status_disetujui', $frsMahasiswa->status_disetujui) == $status ? 'selected' : '' }}>

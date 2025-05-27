@@ -34,7 +34,6 @@ class AuthController extends Controller
 
         $filterOptions = null;
 
-        // Tambahkan data filter jika role mahasiswa
         if ($user->role === 'mahasiswa' && $user->mahasiswa) {
             $tanggalMasuk = $user->mahasiswa->tanggal_masuk;
             $filterOptions = [
@@ -65,7 +64,7 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials)) {
             return back()->withErrors([
-                'email' => 'Email or password incorrect',
+                'email' => 'Email atau password salah',
             ]);
         }
 
@@ -73,7 +72,7 @@ class AuthController extends Controller
         if ($user->role !== 'admin') {
             Auth::logout();
             return back()->withErrors([
-                'email' => 'Access denied',
+                'email' => 'Admin hanya dapat mengakses halaman login web',
             ]);
         }
 

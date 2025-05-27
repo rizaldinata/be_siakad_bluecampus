@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->enum('status_disetujui', ['ya', 'tidak', 'menunggu']);
 
-            $table->text('catatan');
+            $table->text('catatan')->nullable();
 
             $table->foreignId('mahasiswa_id')
                 ->constrained('mahasiswas')

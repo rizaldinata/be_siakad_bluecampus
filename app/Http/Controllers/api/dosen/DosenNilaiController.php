@@ -140,8 +140,8 @@ class DosenNilaiController extends Controller
                 'nrp' => $mahasiswa->mahasiswa->nrp,
                 'mata_kuliah' => $mahasiswa->frs->mataKuliah->nama,
                 'kode_matkul' => $mahasiswa->frs->mataKuliah->kode_matkul,
-                'nilai_huruf' => $mahasiswa->nilai->nilai_huruf ?? null,
-                'nilai_angka' => $mahasiswa->nilai->nilai_angka ?? null,
+                'nilai_huruf' => $mahasiswa->nilai->nilai_huruf ?? 'Belum dinilai',
+                'nilai_angka' => $mahasiswa->nilai->nilai_angka ?? 'Belum dinilai',
             ]
         ]);
     }

@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dosen/frs/kelas', [DosenFrsController::class, 'listKelas']);
     Route::get('/dosen/frs/kelas/{id}/mahasiswa', [DosenFrsController::class, 'listMahasiswa']);
+    Route::get('/dosen/frs/mahasiswa/{id}/list', [DosenFrsController::class, 'listMahasiswaFrs']);
     Route::put('/dosen/frs/kelas/mahasiswa/{id}/persetujuan', [DosenFrsController::class, 'updatePersetujuanFrs']);
     Route::get('/dosen/nilai', [DosenNilaiController::class, 'kelasList']);
     Route::get('/dosen/nilai/mahasiswa', [DosenNilaiController::class, 'mahasiswaList']);

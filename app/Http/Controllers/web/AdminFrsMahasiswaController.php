@@ -33,7 +33,6 @@ class AdminFrsMahasiswaController extends Controller
     {
         $request->validate([
             'status_disetujui' => 'required|in:ya,tidak,menunggu',
-            'catatan' => 'required|string',
             'mahasiswa_id' => 'required|exists:mahasiswas,id',
             'frs_id' => 'required|exists:frs,id',
         ]);
@@ -63,7 +62,6 @@ class AdminFrsMahasiswaController extends Controller
     {
         $request->validate([
             'status_disetujui' => 'required|in:ya,tidak,menunggu',
-            'catatan' => 'required|string',
         ]);
 
         $frsMahasiswa = FrsMahasiswa::findOrFail($id);

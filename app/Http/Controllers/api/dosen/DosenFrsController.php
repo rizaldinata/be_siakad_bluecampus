@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\dosen;
 
 use App\Models\Kelas;
+use App\Models\Nilai;
 use App\Models\Mahasiswa;
 use App\Models\FrsMahasiswa;
 use Illuminate\Http\Request;
@@ -81,7 +82,7 @@ class DosenFrsController extends Controller
 
         $mahasiswa = Mahasiswa::with('kelas')->findOrFail($mahasiswaId);
 
-        if ($mahasiswa->kelas->dosen_wali_id !== $dosen->id) {
+        if ($mahasiswa->dosen_wali_id !== $dosen->id) {
             return response()->json([
                 'status' => 'fail',
                 'message' => 'Anda bukan dosen wali dari mahasiswa ini.'
@@ -117,20 +118,26 @@ class DosenFrsController extends Controller
         ]);
 
         $dosen = Auth::user()->dosen;
-
         $mahasiswa = Mahasiswa::findOrFail($mahasiswaId);
 
-if ($mahasiswa->dosen_wali_id !== $dosen->id) {
-    return response()->json([
-        'status' => 'fail',
-        'message' => 'Anda bukan dosen wali dari mahasiswa ini.'
-    ], 403);
-}
-
+        if ($mahasiswa->dosen_wali_id !== $dosen->id) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Anda bukan dosen wali dari mahasiswa ini.'
+            ], 403);
+        }
 
         $frsMahasiswa = FrsMahasiswa::where('id', $request->frs_mahasiswa_id)
             ->where('mahasiswa_id', $mahasiswaId)
             ->firstOrFail();
+
+        $sudahAdaNilai = Nilai::where('frs_mahasiswa_id', $frsMahasiswa->id)->exists();
+        if ($sudahAdaNilai) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'FRS ini sudah memiliki nilai dan tidak dapat diubah.'
+            ], 400);
+        }
 
         $frsMahasiswa->status_disetujui = $request->status_disetujui;
         $frsMahasiswa->save();

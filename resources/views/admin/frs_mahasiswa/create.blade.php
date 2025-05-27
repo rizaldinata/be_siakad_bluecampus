@@ -52,8 +52,7 @@
                 <!-- Catatan -->
                 <div class="mb-3 col-12">
                     <label for="catatan" class="form-label">Catatan</label>
-                    <textarea name="catatan" id="catatan" rows="5" class="form-control" placeholder="Masukkan catatan penting..."
-                        required>{{ old('catatan') }}</textarea>
+                    <textarea name="catatan" id="catatan" rows="5" class="form-control" placeholder="Masukkan catatan penting...">{{ old('catatan') }}</textarea>
                 </div>
             </div>
 

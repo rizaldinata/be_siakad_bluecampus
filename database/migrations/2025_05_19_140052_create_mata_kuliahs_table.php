@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('kode_matkul')->unique();
             $table->string('nama');
-            $table->string('jenis_matkul')->unique();
+            $table->string('jenis_matkul');
             $table->integer('sks');
             
             $table->timestamps();
