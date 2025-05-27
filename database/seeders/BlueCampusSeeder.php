@@ -25,18 +25,15 @@ class BlueCampusSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // === 1. Tahun Ajaran ===
         $ta1 = TahunAjaran::create(['nama_tahun_ajaran' => '2023/2024']);
         $ta2 = TahunAjaran::create(['nama_tahun_ajaran' => '2024/2025']);
 
-        // === 2. Kelas ===
         $kelas = Kelas::create([
             'nama_kelas' => 'TI-1A',
             'program_studi' => 'Teknik Informatika',
             'parallel_kelas' => 'A',
         ]);
 
-        // === 3. Admins ===
         for ($i = 1; $i <= 2; $i++) {
             $user = User::create([
                 'email' => "admin{$i}@example.com",
@@ -53,7 +50,6 @@ class BlueCampusSeeder extends Seeder
             ]);
         }
 
-        // === 4. Dosen ===
         $dosenIds = [];
         for ($i = 1; $i <= 11; $i++) {
             $user = User::create([
@@ -77,7 +73,6 @@ class BlueCampusSeeder extends Seeder
             $dosenIds[] = $dosen->id;
         }
 
-        // === 5. Mata Kuliah ===
         $matkulIds = [];
         for ($i = 1; $i <= 10; $i++) {
             $matkul = MataKuliah::create([
@@ -90,7 +85,6 @@ class BlueCampusSeeder extends Seeder
             $matkulIds[] = $matkul->id;
         }
 
-        // === 6. Mahasiswa (30) ===
         $mahasiswaIds = [];
         for ($i = 1; $i <= 30; $i++) {
             $user = User::create([
@@ -119,14 +113,12 @@ class BlueCampusSeeder extends Seeder
             $mahasiswaIds[] = $mahasiswa->id;
         }
 
-        // === 7. Paket FRS ===
         $paketFrs = PaketFrs::create([
             'nama_paket' => 'PAKET TI-1A',
             'kelas_id' => $kelas->id,
             'tahun_ajaran_id' => $ta2->id,
         ]);
 
-        // === 8. FRS (10) ===
         $frsIds = [];
         $hariList = ['senin', 'selasa', 'rabu', 'kamis', 'jumat'];
         for ($i = 0; $i < 10; $i++) {
@@ -152,7 +144,6 @@ class BlueCampusSeeder extends Seeder
             ]);
         }
 
-        // === 9. FRS Mahasiswa (30 x 10 = 300)
         $frsMahasiswaIds = [];
         foreach ($mahasiswaIds as $mhsId) {
             foreach ($frsIds as $frsId) {
@@ -165,8 +156,5 @@ class BlueCampusSeeder extends Seeder
                 $frsMahasiswaIds[] = $frsMhs->id;
             }
         }
-
-        // === 10. Nilai: 15 mahasiswa pertama saja
-
     }
 }

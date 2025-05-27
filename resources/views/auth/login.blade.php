@@ -8,9 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         .login-container {
@@ -19,16 +19,18 @@
 
         .login-card {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             overflow: hidden;
             max-width: 900px;
             margin: 0 auto;
+            border: 1px solid #e5e7eb;
         }
 
         .logo-section {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            color: #374151;
             padding: 60px 40px;
             display: flex;
             flex-direction: column;
@@ -38,35 +40,39 @@
             min-height: 500px;
         }
 
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .logo-container {
             margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
         }
 
-        .logo svg {
-            width: 40px;
-            height: 40px;
-            fill: white;
+        .logo-container img {
+            max-width: 200px;
+            max-height: 120px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
         }
 
         .logo-title {
             font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .logo-title .blue-text {
+            color: #2563eb;
+        }
+
+        .logo-title .yellow-text {
+            color: #f59e0b;
         }
 
         .logo-subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-            font-weight: 300;
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 400;
         }
 
         .form-section {
@@ -74,86 +80,103 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            background: #ffffff;
         }
 
         .form-title {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 600;
             color: #1f2937;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            margin-bottom: 8px;
         }
 
         .form-subtitle {
             color: #6b7280;
-            margin-bottom: 40px;
-            font-size: 16px;
+            margin-bottom: 32px;
+            font-size: 14px;
         }
 
         .form-label {
-            font-weight: 600;
+            font-weight: 500;
             color: #374151;
             margin-bottom: 8px;
+            font-size: 14px;
         }
 
         .form-control {
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
             padding: 12px 16px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f9fafb;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: #ffffff;
         }
 
         .form-control:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-            background: white;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
         }
 
         .form-control.is-invalid {
-            border-color: #ef4444;
+            border-color: #dc2626;
         }
 
         .btn-login {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            background: #2563eb;
             color: white;
             border: none;
             padding: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
         .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            background: #1d4ed8;
             color: white;
         }
 
         .alert {
-            border-radius: 12px;
-            border: none;
+            border-radius: 6px;
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            color: #dc2626;
             font-size: 14px;
+            padding: 12px 16px;
+        }
+
+        .alert-danger {
+            border-color: #fecaca;
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+
+        .invalid-feedback {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
         }
 
         .copyright {
             color: #9ca3af;
-            font-size: 13px;
+            font-size: 12px;
             text-align: center;
-            margin-top: 30px;
+            margin-top: 32px;
         }
 
         @media (max-width: 768px) {
             .login-card {
                 margin: 20px;
-                border-radius: 16px;
+                border-radius: 8px;
             }
 
             .logo-section {
                 padding: 40px 30px;
                 min-height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
             }
 
             .form-section {
@@ -161,12 +184,29 @@
             }
 
             .form-title {
-                font-size: 28px;
+                font-size: 24px;
             }
 
             .logo-title {
                 font-size: 24px;
             }
+        }
+
+        /* Additional styling to match the dashboard theme */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
         }
     </style>
 </head>
@@ -178,13 +218,9 @@
                 <!-- Logo Section -->
                 <div class="col-lg-5">
                     <div class="logo-section">
-                        <div class="logo">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z" />
-                            </svg>
+                        <div class="logo-container">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo BlueCampus">
                         </div>
-                        <h1 class="logo-title">Blue Campus</h1>
                         <p class="logo-subtitle">Sistem Informasi Akademik</p>
                     </div>
                 </div>
@@ -203,7 +239,7 @@
 
                         <form method="POST" action="{{ route('web.login') }}">
                             @csrf
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" name="email"
                                     class="form-control @error('email') is-invalid @enderror" id="email"

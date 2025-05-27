@@ -127,7 +127,6 @@ class AdminMahasiswaController extends Controller
             'dosen_wali_id' => 'required|exists:dosens,id',
         ]);
 
-        // Hitung semester otomatis dari tanggal masuk
         $tanggalMasuk = Carbon::parse($request->tanggal_masuk);
         $bulanMasuk = $tanggalMasuk->month;
 
@@ -141,7 +140,6 @@ class AdminMahasiswaController extends Controller
         $selisihBulan = $tanggalMasuk->diffInMonths($sekarang);
         $semester = min(max(ceil($selisihBulan / 6), 1), 8); // min 1, max 8
 
-        // Update user
         $mahasiswa->user->update([
             'name' => $request->nama,
             'email' => $request->email,

@@ -19,7 +19,6 @@ class MahasiswaApiController extends Controller
         }
 
         if ($user->role === 'mahasiswa') {
-            // Ambil data mahasiswa yang login beserta semua relasi penting
             $mahasiswa = Mahasiswa::with([
                 'kelas',
                 'dosenWali',
@@ -36,7 +35,6 @@ class MahasiswaApiController extends Controller
         }
 
         if ($user->role === 'dosen') {
-            // Dosen bisa melihat semua mahasiswa
             $mahasiswaList = Mahasiswa::with(['kelas', 'dosenWali'])->get();
 
             return response()->json($mahasiswaList);
