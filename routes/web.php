@@ -14,6 +14,10 @@ use App\Http\Controllers\web\AdminTahunAjaranController;
 use App\Http\Controllers\web\AdminFrsMahasiswaController;
 use App\Http\Controllers\web\AdminJadwalKuliahController;
 
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 Route::get('/login', [AuthController::class, 'showWebLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'webLogin'])->name('web.login');
 Route::post('/logout', [AuthController::class, 'webLogout'])->name('web.logout');

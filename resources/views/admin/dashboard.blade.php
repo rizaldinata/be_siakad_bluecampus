@@ -28,50 +28,25 @@
         </div>
     </div>
 
-    <!-- Mahasiswa Status -->
+    <!-- Tambahan Statistik -->
     <div class="row mt-2">
         <div class="col-md-4 mb-4">
             <div class="card p-4 stat-card">
-                <h5><i class="bi bi-check-circle-fill me-2 text-success"></i> Mahasiswa Aktif</h5>
-                <p>{{ $mahasiswaAktif }}</p>
+                <h5><i class="bi bi-file-earmark-text-fill me-2 text-primary"></i> Total FRS</h5>
+                <p>{{ $totalFrs }}</p>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="card p-4 stat-card">
-                <h5><i class="bi bi-x-circle-fill me-2 text-danger"></i> Mahasiswa Tidak Aktif</h5>
-                <p>{{ $mahasiswaNonAktif }}</p>
+                <h5><i class="bi bi-people-fill me-2 text-info"></i> Total Kelas</h5>
+                <p>{{ $totalKelas }}</p>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="card p-4 stat-card">
-                <h5><i class="bi bi-pause-circle-fill me-2 text-warning"></i> Mahasiswa Cuti</h5>
-                <p>{{ $mahasiswaCuti }}</p>
+                <h5><i class="bi bi-layers-fill me-2 text-secondary"></i> Total Paket FRS</h5>
+                <p>{{ $totalPaketFrs }}</p>
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('scripts')
-    <script>
-        const statusCtx = document.getElementById('statusChart').getContext('2d');
-        new Chart(statusCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Aktif', 'Tidak Aktif', 'Cuti'],
-                datasets: [{
-                    data: [95, 15, 10],
-                    backgroundColor: ['#4CAF50', '#F44336', '#FF9800']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    </script>
 @endsection

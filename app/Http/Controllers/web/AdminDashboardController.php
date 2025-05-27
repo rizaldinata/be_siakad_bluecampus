@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
 use App\Models\Admin;
-
+use App\Models\Frs;
+use App\Models\Kelas;
+use App\Models\PaketFrs;
 
 class AdminDashboardController extends Controller
 {
@@ -17,13 +19,17 @@ class AdminDashboardController extends Controller
         $totalDosen = Dosen::count();
         $totalAdmin = Admin::count();
 
-        $mahasiswaAktif = Mahasiswa::where('status', 'aktif')->count();
-        $mahasiswaNonAktif = Mahasiswa::where('status', 'non-aktif')->count();
-        $mahasiswaCuti = Mahasiswa::where('status', 'cuti')->count();
+        $totalFrs = Frs::count();
+        $totalKelas = Kelas::count();
+        $totalPaketFrs = PaketFrs::count();
 
         return view('admin.dashboard', compact(
-            'totalMahasiswa', 'totalDosen', 'totalAdmin',
-            'mahasiswaAktif', 'mahasiswaNonAktif', 'mahasiswaCuti'
+            'totalMahasiswa',
+            'totalDosen',
+            'totalAdmin',
+            'totalFrs',
+            'totalKelas',
+            'totalPaketFrs'
         ));
     }
 }

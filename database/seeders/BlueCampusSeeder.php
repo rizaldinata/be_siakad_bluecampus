@@ -157,8 +157,8 @@ class BlueCampusSeeder extends Seeder
         foreach ($mahasiswaIds as $mhsId) {
             foreach ($frsIds as $frsId) {
                 $frsMhs = FrsMahasiswa::create([
-                    'status_disetujui' => 'ya',
-                    'catatan' => $faker->optional()->sentence(),
+                    'status_disetujui' => 'menunggu',
+                    'catatan' => '-',
                     'mahasiswa_id' => $mhsId,
                     'frs_id' => $frsId,
                 ]);
@@ -167,12 +167,6 @@ class BlueCampusSeeder extends Seeder
         }
 
         // === 10. Nilai: 15 mahasiswa pertama saja
-        foreach (array_slice($frsMahasiswaIds, 0, 150) as $frsMhsId) {
-            Nilai::create([
-                'nilai_angka' => rand(65, 100),
-                'nilai_huruf' => $faker->randomElement(['A', 'AB', 'B', 'BC']),
-                'frs_mahasiswa_id' => $frsMhsId,
-            ]);
-        }
+
     }
 }
