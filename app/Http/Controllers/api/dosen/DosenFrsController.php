@@ -89,16 +89,29 @@ class DosenFrsController extends Controller
             ], 403);
         }
 
-        $frsList = FrsMahasiswa::with(['frs.mataKuliah', 'frs.paketFrs.tahunAjaran'])
+        $frsList = FrsMahasiswa::with([
+                'frs.mataKuliah',
+                'frs.paketFrs.tahunAjaran',
+                'frs.dosen'
+            ])
             ->where('mahasiswa_id', $mahasiswaId)
             ->get()
             ->map(function ($item) {
+                $frs = $item->frs;
+                $mataKuliah = $frs->mataKuliah;
+                $dosen = $frs->dosen;
+
                 return [
                     'id' => $item->id,
-                    'mata_kuliah' => $item->frs->mataKuliah->nama ?? '-',
-                    'kode_matkul' => $item->frs->mataKuliah->kode_matkul ?? '-',
-                    'semester' => $item->frs->semester,
-                    'tahun_ajaran' => $item->frs->paketFrs->tahunAjaran->nama_tahun_ajaran ?? '-',
+                    'mata_kuliah' => $mataKuliah->nama ?? '-',
+                    'kode_matkul' => $mataKuliah->kode_matkul ?? '-',
+                    'sks' => $mataKuliah->sks ?? 0,
+                    'semester' => $frs->semester,
+                    'tahun_ajaran' => $frs->paketFrs->tahunAjaran->nama_tahun_ajaran ?? '-',
+                    'dosen' => $dosen->nama ?? '-',
+                    'hari' => $frs->hari ?? '-',
+                    'jam_mulai' => $frs->jam_mulai ?? '-',
+                    'jam_selesai' => $frs->jam_selesai ?? '-',
                     'status_disetujui' => $item->status_disetujui,
                 ];
             });

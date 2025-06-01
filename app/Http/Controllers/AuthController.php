@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Helpers\FilterHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -39,6 +40,19 @@ class AuthController extends Controller
             $filterOptions = [
                 'tahun_ajaran' => FilterHelper::getTahunAjaranList($tanggalMasuk),
                 'semester' => FilterHelper::getSemesterOptions($tanggalMasuk),
+            ];
+        }
+
+        if ($user->role === 'dosen' && $user->dosen) {
+            // Ambil semua tahun ajaran yang terkait dengan frs yang pernah dia ajar
+            $tahunAjaranList = TahunAjaran::whereHas('paketFrs.frs', function ($q) use ($user) {
+                $q->where('dosen_id', $user->dosen->id);
+            })
+            ->orderBy('nama_tahun_ajaran', 'desc')
+            ->pluck('nama_tahun_ajaran');
+
+            $filterOptions = [
+                'tahun_ajaran' => $tahunAjaranList,
             ];
         }
 
