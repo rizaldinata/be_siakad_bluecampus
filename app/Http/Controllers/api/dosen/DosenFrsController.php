@@ -12,10 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 class DosenFrsController extends Controller
 {
+    private function hitungSemesterAktif($tanggalMasuk, $tahunAjaran, $tipeSemester)
+    {
+        $tahunMasuk = (int) date('Y', strtotime($tanggalMasuk));
+        $tahunAwalAjaran = (int) substr($tahunAjaran, 0, 4);
+        $selisihTahun = $tahunAwalAjaran - $tahunMasuk;
+
+        return ($selisihTahun * 2) + ($tipeSemester === 'genap' ? 2 : 1);
+    }
+
     public function listKelas(Request $request)
     {
         $dosen = Auth::user()->dosen;
-
         if (!$dosen) {
             return response()->json([
                 'status' => 'fail',
@@ -23,21 +31,36 @@ class DosenFrsController extends Controller
             ], 403);
         }
 
-        // Ambil kelas yang memiliki mahasiswa yang dibimbing oleh dosen wali tersebut
-        $kelas = Kelas::whereHas('mahasiswas', function ($query) use ($dosen) {
-                $query->where('dosen_wali_id', $dosen->id);
-            })
-            ->withCount(['mahasiswas as jumlah_mahasiswa' => function ($query) use ($dosen) {
-                $query->where('dosen_wali_id', $dosen->id);
-            }])
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'nama_kelas' => $item->nama_kelas,
-                    'jumlah_mahasiswa' => $item->jumlah_mahasiswa,
-                ];
-            });
+        $tahunAjaran = $request->input('tahun_ajaran');
+        $tipeSemester = strtolower($request->input('semester'));
+
+        $mahasiswas = Mahasiswa::where('dosen_wali_id', $dosen->id)->get();
+
+        $semesterMap = [];
+        foreach ($mahasiswas as $mhs) {
+            $semesterMap[$mhs->id] = $this->hitungSemesterAktif($mhs->tanggal_masuk, $tahunAjaran, $tipeSemester);
+        }
+
+        $kelas = Kelas::whereHas('mahasiswas', function ($q) use ($dosen, $tahunAjaran, $semesterMap) {
+            $q->where('dosen_wali_id', $dosen->id)
+              ->whereHas('frsMahasiswa.frs', function ($q2) use ($semesterMap) {
+                  $q2->whereIn('semester', array_unique(array_values($semesterMap)));
+              })
+              ->whereHas('frsMahasiswa.frs.paketFrs.tahunAjaran', function ($q3) use ($tahunAjaran) {
+                  $q3->where('nama_tahun_ajaran', $tahunAjaran);
+              });
+        })
+        ->withCount(['mahasiswas as jumlah_mahasiswa' => function ($q) use ($dosen) {
+            $q->where('dosen_wali_id', $dosen->id);
+        }])
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nama_kelas' => $item->nama_kelas,
+                'jumlah_mahasiswa' => $item->jumlah_mahasiswa,
+            ];
+        });
 
         return response()->json([
             'status' => 'success',
@@ -49,7 +72,6 @@ class DosenFrsController extends Controller
     public function listMahasiswa(Request $request, $kelasId)
     {
         $dosen = Auth::user()->dosen;
-
         if (!$dosen) {
             return response()->json([
                 'status' => 'fail',
@@ -57,8 +79,18 @@ class DosenFrsController extends Controller
             ], 403);
         }
 
+        $tahunAjaran = $request->input('tahun_ajaran');
+        $tipeSemester = strtolower($request->input('semester'));
+
         $mahasiswa = Mahasiswa::where('kelas_id', $kelasId)
             ->where('dosen_wali_id', $dosen->id)
+            ->whereHas('frsMahasiswa.frs.paketFrs.tahunAjaran', function ($q) use ($tahunAjaran) {
+                $q->where('nama_tahun_ajaran', $tahunAjaran);
+            })
+            ->whereHas('frsMahasiswa.frs', function ($q) use ($tipeSemester) {
+                $semesterKe = $tipeSemester === 'genap' ? 2 : 1; // fallback jika tanggal_masuk tidak dihitung
+                $q->where('semester', $semesterKe);
+            })
             ->with('kelas')
             ->get();
 
@@ -76,12 +108,13 @@ class DosenFrsController extends Controller
         ]);
     }
 
-    public function listMahasiswaFrs($mahasiswaId)
+    public function listMahasiswaFrs(Request $request, $mahasiswaId)
     {
         $dosen = Auth::user()->dosen;
+        $tahunAjaran = $request->input('tahun_ajaran');
+        $tipeSemester = strtolower($request->input('semester'));
 
         $mahasiswa = Mahasiswa::with('kelas')->findOrFail($mahasiswaId);
-
         if ($mahasiswa->dosen_wali_id !== $dosen->id) {
             return response()->json([
                 'status' => 'fail',
@@ -89,12 +122,20 @@ class DosenFrsController extends Controller
             ], 403);
         }
 
+        $semesterKe = $this->hitungSemesterAktif($mahasiswa->tanggal_masuk, $tahunAjaran, $tipeSemester);
+
         $frsList = FrsMahasiswa::with([
                 'frs.mataKuliah',
                 'frs.paketFrs.tahunAjaran',
                 'frs.dosen'
             ])
             ->where('mahasiswa_id', $mahasiswaId)
+            ->whereHas('frs.paketFrs.tahunAjaran', function ($q) use ($tahunAjaran) {
+                $q->where('nama_tahun_ajaran', $tahunAjaran);
+            })
+            ->whereHas('frs', function ($q) use ($semesterKe) {
+                $q->where('semester', $semesterKe);
+            })
             ->get()
             ->map(function ($item) {
                 $frs = $item->frs;

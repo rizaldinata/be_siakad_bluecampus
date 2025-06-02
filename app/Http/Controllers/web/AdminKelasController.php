@@ -36,7 +36,6 @@ class AdminKelasController extends Controller
     {
         $kelas = Kelas::with(['mahasiswas.dosenWali'])->findOrFail($id);
 
-        // Ambil dosen wali dari salah satu mahasiswa (jika ada)
         $dosenWali = optional($kelas->mahasiswas->first())->dosenWali;
 
         return view('admin.kelas.show', compact('kelas', 'dosenWali'));

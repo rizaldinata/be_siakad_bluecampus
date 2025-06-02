@@ -23,6 +23,11 @@ class Dosen extends Model
         return $this->hasMany(Frs::class, 'dosen_id');
     }
 
+    public function mahasiswas()
+    {
+        return $this->hasMany(Mahasiswa::class, 'dosen_wali_id');
+    }
+
     public function getNamaLengkapAttribute()
     {
         $gelarDepan = $this->gelar_depan ? $this->gelar_depan . ' ' : '';

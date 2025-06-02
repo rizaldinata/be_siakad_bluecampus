@@ -148,7 +148,7 @@ class BlueCampusSeeder extends Seeder
         foreach ($mahasiswaIds as $mhsId) {
             foreach ($frsIds as $frsId) {
                 $frsMhs = FrsMahasiswa::create([
-                    'status_disetujui' => 'menunggu',
+                    'status_disetujui' => 'ya',
                     'catatan' => '-',
                     'mahasiswa_id' => $mhsId,
                     'frs_id' => $frsId,

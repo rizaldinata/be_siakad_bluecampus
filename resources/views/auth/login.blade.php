@@ -262,7 +262,7 @@
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn btn-login">Masuk</button>
                             </div>
-                        </form>
+                        </form> 
 
                         <div class="copyright">
                             &copy; {{ date('Y') }} Blue Campus - Sistem Informasi Akademik

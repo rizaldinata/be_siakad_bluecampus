@@ -30,6 +30,6 @@ class Mahasiswa extends Model
 
     public function frsMahasiswa()
     {
-        return $this->hasMany(FrsMahasiswa::class, 'id_mahasiswa');
+        return $this->hasMany(FrsMahasiswa::class, 'mahasiswa_id');
     }
 }

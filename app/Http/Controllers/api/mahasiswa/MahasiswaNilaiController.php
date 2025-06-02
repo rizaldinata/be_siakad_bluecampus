@@ -22,7 +22,7 @@ class MahasiswaNilaiController extends Controller
         }
 
         $tahunAjaran = $request->query('tahun_ajaran');
-        $semester = $request->query('semester'); // ganjil / genap
+        $semester = $request->query('semester'); 
 
         $query = FrsMahasiswa::with([
             'frs.mataKuliah',
