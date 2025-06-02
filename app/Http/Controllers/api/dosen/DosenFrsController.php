@@ -43,12 +43,12 @@ class DosenFrsController extends Controller
 
         $kelas = Kelas::whereHas('mahasiswas', function ($q) use ($dosen, $tahunAjaran, $semesterMap) {
             $q->where('dosen_wali_id', $dosen->id)
-              ->whereHas('frsMahasiswa.frs', function ($q2) use ($semesterMap) {
-                  $q2->whereIn('semester', array_unique(array_values($semesterMap)));
-              })
-              ->whereHas('frsMahasiswa.frs.paketFrs.tahunAjaran', function ($q3) use ($tahunAjaran) {
-                  $q3->where('nama_tahun_ajaran', $tahunAjaran);
-              });
+                ->whereHas('frsMahasiswa.frs', function ($q2) use ($semesterMap) {
+                    $q2->whereIn('semester', array_unique(array_values($semesterMap)));
+                })
+                ->whereHas('frsMahasiswa.frs.paketFrs.tahunAjaran', function ($q3) use ($tahunAjaran) {
+                    $q3->where('nama_tahun_ajaran', $tahunAjaran);
+                });
         })
         ->withCount(['mahasiswas as jumlah_mahasiswa' => function ($q) use ($dosen) {
             $q->where('dosen_wali_id', $dosen->id);
@@ -84,15 +84,19 @@ class DosenFrsController extends Controller
 
         $mahasiswa = Mahasiswa::where('kelas_id', $kelasId)
             ->where('dosen_wali_id', $dosen->id)
-            ->whereHas('frsMahasiswa.frs.paketFrs.tahunAjaran', function ($q) use ($tahunAjaran) {
-                $q->where('nama_tahun_ajaran', $tahunAjaran);
+            ->with(['kelas', 'frsMahasiswa.frs.paketFrs.tahunAjaran'])
+            ->get()
+            ->filter(function ($mhs) use ($tahunAjaran, $tipeSemester) {
+                $semesterKe = $this->hitungSemesterAktif($mhs->tanggal_masuk, $tahunAjaran, $tipeSemester);
+
+                return $mhs->frsMahasiswa->contains(function ($frsMhs) use ($tahunAjaran, $semesterKe) {
+                    $frs = $frsMhs->frs;
+                    return $frs &&
+                        optional($frs->paketFrs->tahunAjaran)->nama_tahun_ajaran === $tahunAjaran &&
+                        $frs->semester == $semesterKe;
+                });
             })
-            ->whereHas('frsMahasiswa.frs', function ($q) use ($tipeSemester) {
-                $semesterKe = $tipeSemester === 'genap' ? 2 : 1; // fallback jika tanggal_masuk tidak dihitung
-                $q->where('semester', $semesterKe);
-            })
-            ->with('kelas')
-            ->get();
+            ->values(); // Reset indeks
 
         return response()->json([
             'status' => 'success',
